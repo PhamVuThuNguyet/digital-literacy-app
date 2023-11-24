@@ -1,0 +1,90 @@
+import { StyleSheet } from "react-native";
+import CustomColor from "@app/assets/colors";
+
+export default styles = StyleSheet.create({
+  container: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: CustomColor.secondaryColor,
+    position: "relative",
+  },
+  heading: {
+    fontWeight: "bold",
+    fontSize: 24,
+    color: CustomColor.whiteColor,
+    textAlign: "center",
+    marginTop: 60,
+    textTransform: "uppercase",
+  },
+  avatarWrap: {
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  avatar: {
+    height: 150,
+    width: 150,
+    objectFit: "cover",
+    borderRadius: 999,
+  },
+  formGroup: {
+    width: "100%",
+    marginTop: 20,
+  },
+  inputGroup: {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 24,
+    marginRight: 24,
+    marginTop: 32,
+  },
+  inputLabel: {
+    position: "absolute",
+    top: "-15%",
+    left: 20,
+    backgroundColor: CustomColor.secondaryColor,
+    color: CustomColor.whiteColor,
+    paddingLeft: 4,
+    paddingRight: 4,
+  },
+  inputIconPassword: {
+    position: "absolute",
+    top: "30%",
+    right: 10,
+  },
+  inputElement: {
+    borderWidth: 2,
+    borderColor: "rgba(255, 255, 255, 0.5)",
+    borderStyle: "solid",
+    fontSize: 16,
+    width: "100%",
+    height: 50,
+    borderRadius: 10,
+    padding: 12,
+    color: CustomColor.whiteColor,
+  },
+  inputPasswordElement: {
+    paddingRight: 36,
+  },
+  buttonGroup: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    marginLeft: 24,
+    marginRight: 24,
+    backgroundColor: CustomColor.buttonColor,
+    height: 44,
+    marginTop: 32,
+  },
+  buttonText: {
+    marginLeft: 12,
+    fontSize: 16,
+    color: CustomColor.whiteColor,
+    width: 100,
+    textAlign: "center",
+  },
+});

@@ -1,0 +1,32 @@
+[
+    [
+        {
+            "special": "nambo"
+        },
+        {
+            "word": "dientich",
+            "question": "Cau hoi 1",
+            "letter": 3
+        },
+        {
+            "word": "phusa",
+            "question": "Cau hoi 2",
+            "letter": 4
+        },
+        {
+            "word": "camau",
+            "question": "Cau hoi 3",
+            "letter": 2
+        },
+        {
+            "word": "bacbo",
+            "question": "Cau hoi 4",
+            "letter": 0
+        },
+        {
+            "word": "mecong",
+            "question": "Cau hoi 5",
+            "letter": 3
+        }
+    ]
+]
