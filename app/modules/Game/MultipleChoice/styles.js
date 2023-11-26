@@ -28,7 +28,7 @@ export default styles = StyleSheet.create({
     marginBottom: 20,
   },
   questionTitle: {
-    fontWeight: 700,
+    fontWeight: "700",
     fontSize: 16,
     lineHeight: 22,
     color: CustomColor.whiteColor,
@@ -54,7 +54,7 @@ export default styles = StyleSheet.create({
   questionChoice: {
     textAlign: "center",
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   selectedAnswerWrap: {
     backgroundColor: "#2C8A57",
@@ -80,7 +80,7 @@ export default styles = StyleSheet.create({
     textAlign: "center",
     textTransform: "uppercase",
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   result: {
     display: "flex",
@@ -98,7 +98,7 @@ export default styles = StyleSheet.create({
     color: CustomColor.whiteColor,
     textAlign: "center",
     fontSize: 32,
-    fontWeight: 700,
+    fontWeight: "700",
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -0.3, height: 0.3 },
     textShadowRadius: 2,
@@ -109,7 +109,7 @@ export default styles = StyleSheet.create({
     fontSize: 40,
     letterSpacing: 0.5,
     marginTop: 12,
-    fontWeight: 700,
+    fontWeight: "700",
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -0.3, height: 0.3 },
     textShadowRadius: 2,
@@ -132,7 +132,7 @@ export default styles = StyleSheet.create({
     textAlign: "center",
     color: CustomColor.whiteColor,
     fontSize: 18,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   gameResultButtonWrap: {
     marginTop: 40,
@@ -152,6 +152,6 @@ export default styles = StyleSheet.create({
   gameResultButtonText: {
     color: CustomColor.whiteColor,
     fontSize: 16,
-    fontWeight: 600
+    fontWeight: "600"
   },
 });
