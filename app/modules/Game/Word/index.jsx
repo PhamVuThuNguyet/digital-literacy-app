@@ -1,152 +1,165 @@
-import { observer, useLocalObservable } from "mobx-react";
-import { useEffect, useState, useRef } from "react";
-import Guess from "./Guess";
-import Question from "./Question";
-import Manager from "./Manager/Manager";
-import GameHeader from "../Header";
-import { Text, View, TouchableWithoutFeedback, ScrollView, Keyboard, TouchableOpacity, TextInput } from "react-native";
-import React from "react";
+import { observer, useLocalObservable } from 'mobx-react';
+import { useEffect, useState, useRef } from 'react'
+import Guess from './Guess'
+import Question from './Question'
+import Manager from './Manager/Manager'
+import GameHeader from '../Header';
+import {
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  ScrollView,
+  Keyboard,
+  TouchableOpacity,
+  TextInput
+} from "react-native";
+import React from 'react';
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
 
 export default observer(function WordGame() {
-  const words = useSelector((state) => state.static.words);
-
-  console.log("words", words);
-
   const inputRef = useRef(null);
   const navigate = useNavigation();
   const store = useLocalObservable(() => Manager);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const fetchWordGame = async () => {
-    try {
-      store.init([[{ special: words.special }, ...words.words]]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    fetchWordGame();
-    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardVisible(true); // or some other action
-    });
-    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardVisible(false); // or some other action
-    });
+    store.init();
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (e) => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
     return () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
   }, []);
-  // useEffect(() => {
-  //   store.init()
-  //   // window.addEventListener('keyup', store.handleKeyup)
-  //   return () => {
-  //     // window.removeEventListener('keyup', store.handleKeyup)
-  //   }
-  // }, []);
-
-  const AddSomething = React.forwardRef((props, ref) => (
-    <TextInput
-      // editable={false}
-      ref={ref}
-    />
-  ));
 
   const onSubmit = () => {
+    console.log(inputRef);
+    if (inputRef) inputRef.current.clear();
     store.submitGuess();
-  };
+  }
 
   const onLineSelect = (n) => {
-    this.inputRef.focus();
     store.setCurrentWord(n);
-  };
+  }
 
   const renderQuestion = () => {
     if (!store.wordset[store.currentWord + 1]) return;
-    return <Question question={store.wordset[store.currentWord + 1].question} />;
-  };
+    if (store.won) {
+      return (
+        <Question
+          question={'Ô đặc biệt\n' + store.special.join('')}
+        />
+      )
+    } else {
+      return (
+        <Question
+          question={store.wordset[store.currentWord + 1].question}
+        />
+      )
+    }
+  }
+
+  const renderInput = () => {
+    if (store.won) return;
+    return (
+      <View className="px-4 py-4">
+        <TextInput
+          className="border p-2 border-white text-white font-bold"
+          ref={inputRef}
+          onChangeText={(t) => { store.handleText(t) }}
+        />
+      </View>
+    )
+  }
 
   const renderButtonSubmit = () => {
     if (store.won) return;
     return (
-      <View className="flex items-center">
-        <TouchableOpacity
-          onPress={() => {
-            onSubmit();
-          }}
-        >
-          <View className="w-40">
-            <Text className="uppercase p-6 bg-red-700 text-center font-bold text-white mt-10">Hoàn tất</Text>
+      <View className='flex items-center'>
+        <TouchableOpacity onPress={() => { onSubmit() }} >
+          <View className='w-40'>
+            <Text className="uppercase p-6 bg-red-700 text-center font-bold text-white">Hoàn tất</Text>
           </View>
         </TouchableOpacity>
       </View>
-    );
-  };
+    )
+  }
 
   const renderButtonWord = () => {
     if (store.won) return;
     return (
-      <View className="flex flex-row justify-evenly">
-        {store.guesses.map((_, i) => {
-          return (
-            <TouchableOpacity
-              key={i + 1}
-              onPress={() => {
-                onLineSelect(i);
-              }}
-            >
-              <View className="bg-white aspect-square rounded-full p-2 flex justify-center items-center">
-                <Text className="text-red-900 font-bold center">{i + 1}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+      <View className='flex flex-row justify-evenly mt-10'>
+        {
+          store.guesses.map((_, i) => {
+            return (
+              <TouchableOpacity key={i + 1} onPress={() => { onLineSelect(i) }}>
+                <View className='bg-white aspect-square rounded-full p-2 flex justify-center items-center'>
+                  <Text className='text-red-900 font-bold center'>{i + 1}</Text>
+                </View>
+              </TouchableOpacity>
+            )
+          })
+        }
       </View>
-    );
-  };
+    )
+  }
 
   return (
     <>
       <GameHeader />
-      <ScrollView className="bg-red-500">
-        <Text className="mb-10 p-8 bg-red-900 text-3xl text-center font-bold uppercase text-white">Trò chơi ô chữ</Text>
-        {store.guesses.map((_, i) => (
-          <>
-            <Guess
-              key={i}
-              word={store.wordset[i + 1].word}
-              guess={store.guesses[i]}
-              isGuessed={store.isGuessed(i)}
-              offset={4 - store.wordset[i + 1].letter}
-              isFocus={i === store.currentWord && !store.won}
-            />
-          </>
-        ))}
-        <AddSomething
-          ref={(ref) => {
-            this.inputRef = ref;
-          }}
-        />
-        {renderButtonWord()}
-        {renderQuestion()}
-        {store.won && <Text className="text-4xl my-10 text-white center font-bold">Chiến thắng!</Text>}
-        {store.lost && <Text>You lost!</Text>}
+      <ScrollView className='bg-red-500'>
+        <Text className="mb-10 p-8 bg-red-900 text-3xl text-center font-bold uppercase text-white">
+          Trò chơi ô chữ
+        </Text>
+        <View className='flex items-center justify-center'>
+          <View>
+            {store.guesses.map((_, i) => (
+              <>
+                <Guess
+                  key={i}
+                  word={store.wordset[i + 1].word}
+                  guess={store.guesses[i]}
+                  isGuessed={store.isGuessed(i)}
+                  longest={store.longest}
+                  offset={store.longest - store.wordset[i + 1].letter}
+                  isFocus={i === store.currentWord && !store.won}
+                />
+              </>
+            ))}
+          </View>
+        </View>
+        {
+          renderButtonWord()
+        }
+        {
+          renderQuestion()
+        }
+        {
+          renderInput()
+        }
+        {store.won && <Text className='text-3xl my-10 text-white text-center font-bold'>Chiến thắng!</Text>}
+        {store.lost && <Text className='text-3xl my-10 text-white text-center font-bold'>Bạn đã thua!</Text>}
         {(store.won || store.lost) && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              store.init();
-            }}
-          >
-            <View className="bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4">
-              <Text>Chơi lại</Text>
-            </View>
-          </TouchableWithoutFeedback>
+          <View className='flex items-center'>
+            <TouchableOpacity onPress={() => { store.init() }}>
+              <View className='w-40'>
+                <Text className='uppercase p-4 bg-red-700 text-center font-bold text-white'>Chơi lại</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         )}
         {renderButtonSubmit()}
       </ScrollView>
     </>
-  );
-});
+  )
+})

@@ -1,8 +1,11 @@
+import words from "./words.json";
+
 export default {
     wordset: [],
     special: [],
     guesses: [],
     currentWord: 0,
+    longest: 6,
     get won() {
         if (!this.wordset || !this.wordset[0]) return false;
         console.log(this.special);
@@ -17,7 +20,7 @@ export default {
     get allGuesses() {
         return this.guesses.slice(0, this.currentWord).join("").split("");
     },
-    init(words) {
+    init() {
         this.wordset = [];
         while (!this.wordset || this.wordset.length <= 0) {
             this.wordset = words[Math.round(Math.random() * words.length)];
@@ -28,6 +31,9 @@ export default {
                 this.special.replace(
                     new Array(this.wordset[0].special.length).fill("")
                 );
+                this.longest = this.wordset.reduce((a, b)=> {
+                    return a.letter > b.letter ? a : b; 
+                }).letter
             }
         }
         this.setCurrentWord(0);
@@ -61,29 +67,11 @@ export default {
         }
         console.log("set " + this.currentWord);
     },
-    handleKeyup(e) {
+    handleText(text) {
         if (this.won || this.lost) {
             return;
         }
-
         if (!this.wordset) return;
-
-        if (e.key === "Enter") {
-            return this.submitGuess();
-        }
-        if (e.key === "Backspace") {
-            this.guesses[this.currentWord] = this.guesses[
-                this.currentWord
-            ].slice(0, this.guesses[this.currentWord].length - 1);
-            return;
-        }
-        if (
-            this.guesses[this.currentWord].length <
-                this.wordset[this.currentWord + 1].word.length &&
-            e.key.match(/^[A-z]$/)
-        ) {
-            this.guesses[this.currentWord] =
-                this.guesses[this.currentWord] + e.key.toLowerCase();
-        }
+        this.guesses[this.currentWord] = text.replace(/\s/g,'').toLowerCase();
     },
 };

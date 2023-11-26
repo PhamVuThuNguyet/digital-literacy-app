@@ -3,7 +3,7 @@ import AsyncStorageService from "../services/async-storage.service.js";
 import { API_URL } from "@env";
 
 const axiosClient = axios.create({
-  baseURL: `${API_URL}/api/v1`,
+  baseURL: `http://3.0.57.99:3001/api/v1`,
   headers: {
     "content-type": "application/json",
   },
