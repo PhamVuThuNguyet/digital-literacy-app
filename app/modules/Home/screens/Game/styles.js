@@ -19,7 +19,7 @@ export default styles = StyleSheet.create({
     color: "#FFF",
     textTransform: "uppercase",
     letterSpacing: 1,
-    textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    // textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     marginBottom: 8,
   },
   item: {
@@ -35,7 +35,7 @@ export default styles = StyleSheet.create({
   itemLabel: {
     color: "#771717",
     fontSize: 24,
-    fontWeight: 900,
+    fontWeight: "900",
     letterSpacing: 0.5,
     flex: 1,
     textAlign: "center",
